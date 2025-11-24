@@ -108,11 +108,12 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;700&display=swap');
 
 body {
-    margin: 0; /* 去掉默认边距 */
-    height: 100vh; /* 使body高度为视口高度 */
-    position: relative; /* 相对定位以便绝对定位的子元素 */
-    /* 背景由 #bgLayer 管理（可由 JS 按场景切换） */
-    z-index: 1;
+    margin: 0;
+    height: 100vh;
+    position: relative;
+    background: #0f1113; /* 深色背景让插画更突出 */
+    color: #eaeaea;
+    font-family: 'Noto Sans SC', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 }
 
 /* 背景层：由 JS 按场景设置 background-image 并使用 opacity 淡入 */
@@ -123,86 +124,89 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     z-index: 0;
-    transition: opacity .4s ease;
+    transition: opacity .45s ease, filter .3s ease;
     opacity: 1;
+    filter: saturate(0.98) contrast(0.95) brightness(0.95);
 }
 
 .novel-container {
-    width: 90%; /* 设置小说容器宽度为90% */
-    max-width: 1000px; /* 最大宽度限制 */
-    height: 280px; /* 设置高度为280px */
-    position: absolute; /* 使用绝对定位 */
-    top: 68%; /* 垂直居中 */
-    left: 50%; /* 水平居中 */
-    transform: translate(-50%, -50%); /* 调整位置使其居中 */
-    /* 玻璃面板风格 */
-    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.35));
-    backdrop-filter: blur(6px) saturate(120%);
-    color: #f7f7f7; /* 字体颜色 */
-    display: flex; /* 使用flex布局 */
-    border-radius: 10px; /* 圆角边框 */
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* 添加阴影效果 */
-    overflow: hidden; /* 隐藏溢出内容 */
-    border: 2px solid #333; /* 添加深灰色边框 */
+    width: 88%;
+    max-width: 980px;
+    height: 300px;
+    position: absolute;
+    left: 50%;
+    bottom: 6%;
+    transform: translateX(-50%);
+    background: rgba(18,20,22,0.66);
+    backdrop-filter: blur(8px) saturate(110%);
+    color: #eef2f3;
+    display: flex;
+    border-radius: 12px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.04);
     z-index: 3;
 }
 
 .character-portrait {
-    width: 150px; /* 角色头像宽度 */
+    width: 160px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 12px;
+    padding: 14px 12px;
     box-sizing: border-box;
     position: relative;
     overflow: hidden;
-    border-radius: 10px 0 0 10px; /* 左侧圆角 */
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.12));
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.03), 0 8px 20px rgba(0,0,0,0.45);
+    border-radius: 10px 0 0 10px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.08));
 }
 
 .character-portrait img {
-    max-width: 100%; 
+    max-width: 100%;
     max-height: 140px;
-    width: auto;
-    height: auto;
     object-fit: contain;
     border-radius: 7px;
 }
 
 /* 活动头像高亮样式 */
 .character-portrait.active {
-    box-shadow: 0 10px 30px rgba(5,20,40,0.6), 0 0 0 3px rgba(255,255,255,0.04) inset;
-    transform: translateY(-2px);
-    transition: all 0.28s ease;
+    box-shadow: 0 12px 36px rgba(6,22,40,0.7);
+    transform: translateY(-3px);
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
 }
 
 .content-area {
     flex: 1;
     position: relative;
-    padding: 24px 28px;
-    font-family: 'Noto Sans SC', sans-serif;
+    padding: 26px 28px 20px 18px;
 }
 
 .character-name {
     position: absolute;
-    top: 30px;
-    left: 30px;
-    font-size: 22px;
-    color: #1f1f1f;
+    top: 16px;
+    left: 18px;
+    font-size: 18px;
+    color: #f4f6f7;
     font-weight: 700;
-    padding: 6px 12px;
-    background: rgba(255,255,255,0.03);
+    padding: 6px 10px;
+    background: transparent; /* 不显示灰色背景 */
     border-radius: 8px;
+    text-shadow: 0 1px 0 rgba(0,0,0,0.6);
+}
+
+/* 如果名字为空则不显示名称块（防止显示灰色背景） */
+.character-name:empty {
+    display: none !important;
 }
 
 .text-box {
-    font-size: 20px;
-    line-height: 1.7;
-    color: #1e1e1e;
+    font-size: 18px;
+    line-height: 1.85;
+    color: #eef2f3;
     margin-bottom: 24px;
-    padding-bottom: 80px;
+    padding-bottom: 86px;
     z-index: 4;
+    text-shadow: 0 1px 0 rgba(0,0,0,0.6);
 }
 
 /* 打字机光标 */
@@ -212,7 +216,7 @@ body {
     margin-left: 6px;
     opacity: 0.9;
     animation: blink 1s steps(1) infinite;
-    color: rgba(30,30,30,0.9);
+    color: rgba(240,240,240,0.9);
 }
 
 @keyframes blink {
@@ -222,27 +226,25 @@ body {
 
 .continue-button {
     position: absolute;
-    right: 24px;
-    bottom: 22px;
-    padding: 10px 24px;
-    background-color: rgba(0,0,0,0.7);
-    color: #ffffff;
-    border-radius: 22px;
+    right: 22px;
+    bottom: 18px;
+    padding: 10px 20px;
+    background-color: rgba(255,255,255,0.08);
+    color: #fff;
+    border-radius: 20px;
     display: none;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 700;
     cursor: pointer;
     transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.12s ease;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.45), 0 0 12px rgba(0,0,0,0.25) inset;
-    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.45);
+    border: 1px solid rgba(255,255,255,0.06);
     z-index: 7;
 }
 
 .continue-button:hover {
-    background-color: rgba(255,255,255,0.12);
-    color: #fff;
+    background-color: rgba(255,255,255,0.14);
     transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 10px 28px rgba(0,0,0,0.55), 0 0 18px rgba(255,255,255,0.02) inset;
 }
 
 .continue-button:focus {
@@ -257,10 +259,11 @@ body {
     display: none;
     flex-direction: column;
     align-items: flex-end;
-    gap: 4px;
+    gap: 8px;
     z-index: 6;
     opacity: 0;
-    transition: opacity .15s ease;
+    transition: opacity .18s ease, transform .18s ease;
+    transform: translateY(4px);
 }
 
 .choice-container.visible {
@@ -271,18 +274,19 @@ body {
 .choice-button {
     display: inline-flex;
     white-space: nowrap;
-    padding: 4px 10px;
-    background: rgba(28,28,30,0.6);
-    color: #efe8da;
-    border-radius: 6px;
+    padding: 8px 14px;
+    background: rgba(255,255,255,0.06);
+    color: #fff;
+    border-radius: 8px;
     cursor: pointer;
-    transition: all .18s ease;
+    transition: transform .18s ease, background .18s ease;
     font-size: 14px;
+    border: 1px solid rgba(255,255,255,0.04);
 }
 
 .choice-button:hover {
-    transform: translateY(-4px);
-    background: rgba(36,36,38,0.86);
+    transform: translateY(-6px);
+    background: rgba(255,255,255,0.12);
 }
 
 .choice-enter {
@@ -297,16 +301,17 @@ body {
 /* ======= 立绘 ======= */
 .character-standing {
     position: absolute;
-    top: 50px;
+    top: 36px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 2;
     width: 420px;
-    transition: opacity .3s ease;
+    transition: opacity .3s ease, transform .25s ease;
 }
 
 .character-standing img {
     width: 100%;
+    filter: drop-shadow(0 8px 28px rgba(0,0,0,0.6));
 }
 
 .standing-left { left: 35%; transform: translateX(-50%); }
@@ -315,22 +320,23 @@ body {
 .standing-large { width: 550px; }
 
 /* 自定义按钮样式 */
-    .custombutton {
-        background-color: #7AC45C; /* 背景颜色 */
-        border: none; /* 去掉边框 */
-        color: white; /* 文字颜色 */
-        width: 200px; /* 按钮宽度 */
-        height: 60px; /* 按钮高度 */
-        padding: 15px 32px; /* 内边距 */
-        text-align: center; /* 文字对齐 */
-        text-decoration: none; /* 去掉下划线 */
-        display: inline-block; /* 显示为内联块 */
-        font-size: 26px; /* 字体大小 */
-        margin: 4px 2px; /* 外边距 */
-        cursor: pointer; /* 鼠标指针样式 */
-        border-radius: 8px; /* 圆角 */
-        transition: background-color 0.3s ease; /* 背景颜色过渡效果 */
-    }
+.custombutton {
+    background-color: #5EA967;
+    border: none;
+    color: white;
+    width: 200px;
+    height: 56px;
+    padding: 12px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    margin: 6px 4px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.18s ease, transform 0.12s ease;
+}
+.custombutton:hover { transform: translateY(-4px); background-color: #6FCB82; }
 
 
 
@@ -506,8 +512,36 @@ window.NovelSystem = {
         const scene = self.state.variables.texts[self.state.variables.currentIndex];
         if (!scene) return;
 
-        $('#charImage').attr('src', scene.image || '');
-        $('#charName').text(scene.name || '');
+        // 头像：若 scene.image 为空则隐藏 img 元素，避免显示破损占位
+        try {
+            const imgEl = $('#charImage');
+            const imgSrc = (scene.image === undefined || scene.image === null) ? '' : String(scene.image).trim();
+            // 解绑之前的事件，避免重复绑定
+            imgEl.off('.NovelSystem');
+            if (imgSrc) {
+                imgEl.on('error.NovelSystem', function () { $(this).hide().attr('src', ''); });
+                imgEl.on('load.NovelSystem', function () { $(this).show(); });
+                imgEl.attr('src', imgSrc);
+                imgEl.show();
+                $('#standingImageContainer').show();
+            } else {
+                imgEl.hide().attr('src', '');
+                $('#standingImageContainer').hide();
+            }
+        } catch (e) { /* ignore image handling errors */ }
+        // set char name and hide when empty to avoid showing placeholder background
+        try {
+            const nameEl = $('#charName');
+            const rawName = (scene.name === undefined || scene.name === null) ? '' : String(scene.name);
+            const trimmed = rawName.replace(/^[\s\u00A0]+|[\s\u00A0]+$/g, '');
+            if (trimmed.length === 0) {
+                nameEl.hide();
+                nameEl.text('');
+            } else {
+                nameEl.text(trimmed);
+                nameEl.show();
+            }
+        } catch (e) { /* ignore */ }
         $('#envText').text(scene.environmentText || '');
         // 支持在 scene.text 中使用 SugarCube 宏（如 <<if>>）。
         // 先用 Wikifier 渲染宏到临时容器，再取纯文本传给打字机显示。
@@ -965,10 +999,10 @@ window.NovelSystem.state.variables.texts = [
         ]
     },
     {
-        &quot;image&quot;: &quot;img/avatar/qingyu1.png&quot;,
+        &quot;image&quot;: &quot;img/avatar/qingxia1.png&quot;,
         &quot;name&quot;: &quot;沐清夏&quot;,
         &quot;text&quot;: &quot;别嘴贫啦，赶紧吃饭&quot;,
-        &quot;standing&quot;: &quot;img/standing/qingyu1.png&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingxia1.png&quot;,
         &quot;standingPosition&quot;: &quot;left&quot;,
         &quot;standingSize&quot;: &quot;large&quot;
     },
@@ -993,7 +1027,7 @@ window.NovelSystem.showCurrentScene();
 </tw-passagedata><tw-passagedata pid="4" name="StoryCaption" tags="" position="200,100" size="100,100">日期：$date
 沐清夏好感度：$love_qingxia
 是否帮忙做早餐：$help_breakfast
-</tw-passagedata><tw-passagedata pid="5" name="气泡、立绘、对话框" tags="" position="400,0" size="100,100">&lt;html lang=&quot;zh-CN&quot;&gt;
+</tw-passagedata><tw-passagedata pid="5" name="气泡、立绘、对话框" tags="" position="400,100" size="100,100">&lt;html lang=&quot;zh-CN&quot;&gt;
 &lt;head&gt;
     &lt;meta charset=&quot;UTF-8&quot;&gt;
     &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
@@ -1367,31 +1401,22 @@ window.NovelSystem.state.variables.texts = [
     {
         &quot;image&quot;: &quot;img/avatar/qingyu1.png&quot;,
         &quot;name&quot;: &quot;？？？&quot;,
-        &quot;text&quot;: &quot;醒醒……&quot;,
-        &quot;standing&quot;: &quot;&quot;,
-        &quot;standingPosition&quot;: &quot;left&quot;,
-        &quot;standingSize&quot;: &quot;large&quot;
+        &quot;text&quot;: &quot;……清歌姐姐——&quot;
     },
     {
         &quot;image&quot;: &quot;img/avatar/qingyu1.png&quot;,
         &quot;name&quot;: &quot;？？？&quot;,
-        &quot;text&quot;: &quot;都几点了……怎么还不起床呀……&quot;,
-        &quot;standing&quot;: &quot;&quot;,
-        &quot;standingPosition&quot;: &quot;left&quot;,
-        &quot;standingSize&quot;: &quot;large&quot;
+        &quot;text&quot;: &quot;起床啦……再不起来我就要——&quot;
+    },
+    {
+        &quot;image&quot;: &quot;img/avatar/qingyu1.png&quot;,
+        &quot;name&quot;: &quot;？？？&quot;,
+        &quot;text&quot;: &quot;……掀被子了哦？&quot;
     },
     {
         &quot;image&quot;: &quot;img/avatar/qingge1.png&quot;,
         &quot;name&quot;: &quot;&quot;,
-        &quot;text&quot;: &quot;你睁开眼，眼前是你的妹妹，沐清羽。&quot;,
-        &quot;standing&quot;: &quot;img/standing/qingyu1.png&quot;,
-        &quot;standingPosition&quot;: &quot;left&quot;,
-        &quot;standingSize&quot;: &quot;large&quot;
-    },
-    {
-        &quot;image&quot;: &quot;img/avatar/qingge1.png&quot;,
-        &quot;name&quot;: &quot;沐清歌&quot;,
-        &quot;text&quot;: &quot;好困……现在是几点？&quot;,
+        &quot;text&quot;: &quot;你揉揉眼睛。模糊的视线里，是正趴在床沿盯着你的沐清羽。&quot;,
         &quot;standing&quot;: &quot;img/standing/qingyu1.png&quot;,
         &quot;standingPosition&quot;: &quot;left&quot;,
         &quot;standingSize&quot;: &quot;large&quot;
@@ -1399,12 +1424,49 @@ window.NovelSystem.state.variables.texts = [
     {
         &quot;image&quot;: &quot;img/avatar/qingyu1.png&quot;,
         &quot;name&quot;: &quot;沐清羽&quot;,
-        &quot;text&quot;: &quot;已经快中午了哦？真是的，清歌姐姐昨晚到底几点才睡的呀。&quot;,
+        &quot;text&quot;: &quot;都几点了……怎么还不起床呀，清歌姐姐今天难道不打算吃早餐了吗？&quot;,
         &quot;standing&quot;: &quot;img/standing/qingyu1.png&quot;,
         &quot;standingPosition&quot;: &quot;left&quot;,
-        &quot;standingSize&quot;: &quot;large&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;
+    },
+    {
+        &quot;image&quot;: &quot;img/avatar/qingge1.png&quot;,
+        &quot;name&quot;: &quot;沐清歌&quot;,
+        &quot;text&quot;: &quot;……唔。好困……现在几点？&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingyu1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;
+    },
+    {
+        &quot;image&quot;: &quot;img/avatar/qingyu1.png&quot;,
+        &quot;name&quot;: &quot;沐清羽&quot;,
+        &quot;text&quot;: &quot;快！中！午！了！我都敲门三次了你都没醒，还以为你被床吃掉了呢。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingyu1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;
+    },
+    {
+      &quot;image&quot;: &quot;img/avatar/qingge1.png&quot;,
+      &quot;name&quot;: &quot;沐清歌&quot;,
+      &quot;text&quot;: &quot;……知道了啦，我起来了。&quot;,
+      &quot;standing&quot;: &quot;img/standing/qingyu1.png&quot;,
+      &quot;standingPosition&quot;: &quot;left&quot;,
+      &quot;standingSize&quot;: &quot;large&quot;
+    },
+    {
+        &quot;image&quot;: &quot;img/avatar/qingyu1.png&quot;,
+        &quot;name&quot;: &quot;沐清羽&quot;,
+        &quot;text&quot;: &quot;这还差不多！快点，哥哥已经在厨房啦。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingyu1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;
+    },
+    {
+        &quot;image&quot;: &quot;img/avatar/qingge1.png&quot;,
+        &quot;name&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;你挣扎着从床上坐起，深吸一口气，让脑袋清醒一点，然后推开了房门。&quot;,
         &quot;choices&quot;: [
-            { &quot;text&quot;: &quot;去场景 A&quot;, &quot;target&quot;: &quot;d1起床后&quot; }
+            { &quot;text&quot;: &quot;继续&quot;, &quot;target&quot;: &quot;d1起床后&quot; }
         ]
     }
 ];
@@ -1441,39 +1503,86 @@ window.NovelSystem.showCurrentScene();
 &lt;&lt;run window.NovelSystem.state.variables.passageBackground = &quot;img/background/qinggebedroom.png&quot;;
 window.NovelSystem.state.variables.texts = [
     {
-        &quot;image&quot;: &quot;img/avatar/qingyu1.png&quot;,
+        &quot;image&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;你推开门时，空气里有淡淡的牛奶香。楼下传来切菜的清脆声。&quot;
+    },
+    {
+        &quot;image&quot;: &quot;img/avatar/qingxia1.png&quot;,
         &quot;name&quot;: &quot;？？？&quot;,
-        &quot;text&quot;: &quot;起的很晚呢，很早看见你睡懒觉。&quot;,
-        &quot;standing&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;起得很晚啊。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingxia1.png&quot;,
         &quot;standingPosition&quot;: &quot;left&quot;,
         &quot;standingSize&quot;: &quot;large&quot;
     },
     {
-        &quot;image&quot;: &quot;img/avatar/qingyu1.png&quot;,
-        &quot;name&quot;: &quot;&quot;,
-        &quot;text&quot;: &quot;眼前的人正在厨房看着你。\n他是你的哥哥，沐清夏。&quot;,
-        &quot;standing&quot;: &quot;&quot;,
-        &quot;standingPosition&quot;: &quot;left&quot;,
-        &quot;standingSize&quot;: &quot;large&quot;
-    },
-    {
-        &quot;image&quot;: &quot;img/avatar/qingge1.png&quot;,
-        &quot;name&quot;: &quot;&quot;,
-        &quot;text&quot;: &quot;噢，看一眼就知道，当然不是亲哥。&quot;,
-        &quot;standing&quot;: &quot;&quot;,
+        &quot;image&quot;: &quot;img/avatar/qingxia1.png&quot;,
+        &quot;name&quot;: &quot;？？？&quot;,
+        &quot;text&quot;: &quot;我在厨房的时候，听见你在房间里翻身。后来就没动静了。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingxia1.png&quot;,
         &quot;standingPosition&quot;: &quot;left&quot;,
         &quot;standingSize&quot;: &quot;large&quot;
     },
     {
         &quot;image&quot;: &quot;img/avatar/qingge1.png&quot;,
-        &quot;name&quot;: &quot;&quot;,
-        &quot;text&quot;: &quot;看起来早餐还需要一会才能完成的样子，做点什么好呢&quot;,
-        &quot;standing&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;沐清歌&quot;,
+        &quot;text&quot;: &quot;……你连这个都听得到？&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingxia1.png&quot;,
         &quot;standingPosition&quot;: &quot;left&quot;,
-        &quot;standingSize&quot;: &quot;large&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;
+    },
+    {
+        &quot;image&quot;: &quot;img/avatar/qingxia1.png&quot;,
+        &quot;name&quot;: &quot;？？？&quot;,
+        &quot;text&quot;: &quot;声音挺明显的，我以为你一会儿就下来，火候还特地留着。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingxia1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;
+    },
+    {
+        &quot;image&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;他的语气很平和，没有责怪，但隐约能听出一点“拿你没办法”的无奈。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingxia1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;
+    },
+    {
+        &quot;image&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;他侧过身，把锅铲搁在灶边。光线从窗户照进来，落在他肩上。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingxia1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;
+    },
+    {
+        &quot;image&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;他是你的哥哥，沐清夏。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingxia1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;
+    },
+    {
+        &quot;image&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;当然一看就知道，不是亲生的那种。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingxia1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;
+    },
+    {
+        &quot;image&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;厨房的锅里还咕嘟咕嘟地冒着热气。看起来早餐还需要一点时间。&quot;
+    },
+    {
+        &quot;image&quot;: &quot;img/avatar/qingge1.png&quot;,
+        &quot;name&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;要做点什么呢？&quot;,
         &quot;choices&quot;: [
-            { &quot;text&quot;: &quot;帮助沐清夏做早餐&quot;, &quot;target&quot;: &quot;d1做早餐&quot; },
-            { &quot;text&quot;: &quot;在餐桌前坐下&quot;, &quot;target&quot;: &quot;d1不做早餐&quot; }
+            { &quot;text&quot;: &quot;去帮忙做早餐&quot;, &quot;target&quot;: &quot;d1做早餐&quot; },
+            { &quot;text&quot;: &quot;先到餐桌边坐着等&quot;, &quot;target&quot;: &quot;d1不做早餐&quot; }
         ]
     }
 ];
@@ -1486,19 +1595,133 @@ window.NovelSystem.showCurrentScene();
 [[d1不做早餐]]
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="9" name="d1做早餐" tags="" position="100,700" size="100,100">&lt;&lt;include &quot;UI_NovelLayout&quot;&gt;&gt;
 &lt;&lt;set $help_breakfast = true &gt;&gt;
-&lt;&lt;set $love_qingxia += 1&gt;&gt;
+&lt;&lt;set $love_qingxia += 2&gt;&gt;
 
 &lt;&lt;run window.NovelSystem.state.variables.passageBackground = &quot;img/background/qinggebedroom.png&quot;;
 window.NovelSystem.state.variables.texts = [
     {
         &quot;image&quot;: &quot;img/avatar/qingge1.png&quot;,
-        &quot;name&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;沐清歌&quot;,
         &quot;text&quot;: &quot;清夏，我来帮帮你吧？还有什么我需要做的吗？&quot;,
-        &quot;standing&quot;: &quot;&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingxia1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;
+    },
+    {
+        &quot;image&quot;: &quot;img/avatar/qingxia1.png&quot;,
+        &quot;name&quot;: &quot;沐清夏&quot;,
+        &quot;text&quot;: &quot;其他的都已经做的差不多了，帮我煎下鸡蛋吧。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingxia1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;
+    },
+    {
+        &quot;image&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;沐清夏取下挂在一旁的围裙，递给了你。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingxia1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;
+    },
+    {
+        &quot;image&quot;: &quot;img/avatar/qingxia1.png&quot;,
+        &quot;name&quot;: &quot;沐清夏&quot;,
+        &quot;text&quot;: &quot;油已经热了，小心点。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingxia1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;
+    },
+    {
+        &quot;image&quot;: &quot;img/avatar/qingge1.png&quot;,
+        &quot;name&quot;: &quot;沐清歌&quot;,
+        &quot;text&quot;: &quot;嗯嗯。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingxia1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;
+    },
+    {
+        &quot;image&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;你站到一旁，把鸡蛋磕开倒进锅里。油花轻轻炸开时，沐清夏顺手把调味料推到你旁边。&quot;
+    },
+    {
+        &quot;image&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;翻个面，火候掌握得刚刚好。&quot;
+    },
+    {
+        &quot;image&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;沐清夏扫了一眼，点了点头。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingxia1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;
+    },
+    {
+        &quot;image&quot;: &quot;img/avatar/qingxia1.png&quot;,
+        &quot;name&quot;: &quot;沐清夏&quot;,
+        &quot;text&quot;: &quot;不错，可以关火了，剩下的交给我吧。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingxia1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;
+    },
+    {
+        &quot;image&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;他递给了你两个盘子。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingxia1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;
+    },
+    {
+        &quot;image&quot;: &quot;img/avatar/qingxia1.png&quot;,
+        &quot;name&quot;: &quot;沐清夏&quot;,
+        &quot;text&quot;: &quot;端过去吧，马上就可以开饭了。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingxia1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;
+    },
+    {
+        &quot;image&quot;: &quot;img/avatar/qingge1.png&quot;,
+        &quot;name&quot;: &quot;沐清歌&quot;,
+        &quot;text&quot;: &quot;好哦。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingxia1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;
+    },
+    {
+        &quot;image&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;你端着盘子向餐桌走去，沐清羽正趴在餐桌上看着你，桌子上是已经空了的牛奶杯。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingyu1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;
+    },
+    {
+        &quot;image&quot;: &quot;img/avatar/qingyu1.png&quot;,
+        &quot;name&quot;: &quot;沐清羽&quot;,
+        &quot;text&quot;: &quot;终于好了嘛！我已经要饿晕了啦&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingyu1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;
+    },
+    {
+        &quot;image&quot;: &quot;img/avatar/qingxia1.png&quot;,
+        &quot;name&quot;: &quot;沐清夏&quot;,
+        &quot;text&quot;: &quot;好啦，这不是端来了嘛。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingyu1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;
+    },
+    {
+        &quot;image&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;沐清夏对着沐清羽宠溺地笑了笑。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingyu1.png&quot;,
         &quot;standingPosition&quot;: &quot;left&quot;,
         &quot;standingSize&quot;: &quot;large&quot;,
         &quot;choices&quot;: [
-            { &quot;text&quot;: &quot;吃饭&quot;, &quot;target&quot;: &quot;d1早餐&quot; },
+            { &quot;text&quot;: &quot;继续&quot;, &quot;target&quot;: &quot;d1早餐&quot; },
         ]
     }
 ];
@@ -1510,18 +1733,164 @@ window.NovelSystem.showCurrentScene();
 [[d1早餐]]
 &lt;/div&gt;</tw-passagedata><tw-passagedata pid="10" name="d1不做早餐" tags="" position="250,700" size="100,100">&lt;&lt;include &quot;UI_NovelLayout&quot;&gt;&gt;
 &lt;&lt;set $help_breakfast = false &gt;&gt;
+&lt;&lt;set $love_qingyu += 1&gt;&gt;
 
 &lt;&lt;run window.NovelSystem.state.variables.passageBackground = &quot;img/background/qinggebedroom.png&quot;;
 window.NovelSystem.state.variables.texts = [
     {
-        &quot;image&quot;: &quot;img/avatar/qingge1.png&quot;,
+        &quot;image&quot;: &quot;&quot;,
         &quot;name&quot;: &quot;&quot;,
-        &quot;text&quot;: &quot;思考了片刻，沐清歌还是决定在餐桌前坐下。\n有这样一个能干的哥哥，谁都想偷下懒对吧&quot;,
-        &quot;standing&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;有这样一个能干的哥哥，谁都想偷下懒对吧？&quot;
+    },
+    {
+        &quot;image&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;你没有走向厨房，而是直接在餐桌旁拉开椅子坐下。&quot;
+    },
+    {
+        &quot;image&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;正在低头刷手机的沐清羽被你突然的动静吓了一跳。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingyu1.png&quot;,
         &quot;standingPosition&quot;: &quot;left&quot;,
         &quot;standingSize&quot;: &quot;large&quot;,
+    },
+    {
+        &quot;image&quot;: &quot;img/avatar/qingyu1.png&quot;,
+        &quot;name&quot;: &quot;沐清羽&quot;,
+        &quot;text&quot;: &quot;——哎？！&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingyu1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;,
+    },
+    {
+        &quot;image&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;她手一抖，想把手机往身后一藏，却碰倒了桌角的杯子。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingyu1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;,
+    },
+    {
+        &quot;image&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;咣当！&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingyu1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;,
+    },
+    {
+        &quot;image&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;牛奶顺着桌面洒了一片。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingyu1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;,
+    },
+    {
+        &quot;image&quot;: &quot;img/avatar/qingyu1.png&quot;,
+        &quot;name&quot;: &quot;沐清羽&quot;,
+        &quot;text&quot;: &quot;呜哇……！！糟糕糟糕糟糕……！&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingyu1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;,
+    },
+    {
+        &quot;image&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;你立刻抽了几张纸巾压住溢出的边缘。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingyu1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;,
+    },
+    {
+        &quot;image&quot;: &quot;img/avatar/qingge1.png&quot;,
+        &quot;name&quot;: &quot;沐清歌&quot;,
+        &quot;text&quot;: &quot;我来擦，你别动。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingyu1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;
+    },
+    {
+        &quot;image&quot;: &quot;img/avatar/qingyu1.png&quot;,
+        &quot;name&quot;: &quot;沐清羽&quot;,
+        &quot;text&quot;: &quot;……对不起。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingyu1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;,
+    },
+    {
+        &quot;image&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;沐清羽乖乖抬起手肘，让出位置，小声说道。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingyu1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;,
+    },
+    {
+        &quot;image&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;你默默把桌面擦干，把杯子放回原处。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingyu1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;,
+    },
+    {
+        &quot;image&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;从厨房传来锅铲轻轻敲锅的声音。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingyu1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;,
+    },
+    {
+        &quot;image&quot;: &quot;img/avatar/qingxia1.png&quot;,
+        &quot;name&quot;: &quot;沐清夏&quot;,
+        &quot;text&quot;: &quot;牛奶洒了？&quot;
+    },
+    {
+        &quot;image&quot;: &quot;img/avatar/qingyu1.png&quot;,
+        &quot;name&quot;: &quot;沐清羽&quot;,
+        &quot;text&quot;: &quot;是的……&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingyu1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;,
+    },
+    {
+        &quot;image&quot;: &quot;img/avatar/qingxia1.png&quot;,
+        &quot;name&quot;: &quot;沐清夏&quot;,
+        &quot;text&quot;: &quot;好。我再热一杯，一会儿拿过来。&quot;
+    },
+    {
+        &quot;image&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;沐清羽缩着肩，偷偷瞄了一眼你，又飞快移开目光。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingyu1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;,
+    },
+    {
+        &quot;image&quot;: &quot;img/avatar/qingge1.png&quot;,
+        &quot;name&quot;: &quot;沐清歌&quot;,
+        &quot;text&quot;: &quot;没事的。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingyu1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;
+    },
+    {
+        &quot;image&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;你笑笑，摸了摸她的头。&quot;,
+        &quot;standing&quot;: &quot;img/standing/qingyu1.png&quot;,
+        &quot;standingPosition&quot;: &quot;left&quot;,
+        &quot;standingSize&quot;: &quot;large&quot;,
+    },
+    {
+        &quot;image&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;&quot;,
+        &quot;text&quot;: &quot;沐清夏很快就把牛奶端了过来，一起端过来的还有早餐。&quot;,
         &quot;choices&quot;: [
-            { &quot;text&quot;: &quot;吃饭&quot;, &quot;target&quot;: &quot;d1早餐&quot; }
+            { &quot;text&quot;: &quot;继续&quot;, &quot;target&quot;: &quot;d1早餐&quot; }
         ]
     }
 ];
